@@ -3,6 +3,7 @@
     "eslint:reccomended",
     "plugin:import/errors",
     "plugin:react/recommended",
+    "plugin: react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
     "prettier"
   ],
