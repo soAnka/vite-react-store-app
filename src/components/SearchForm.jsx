@@ -7,7 +7,6 @@ const categories = [
 ];
 
 const SearchForm = ({ userCategory, setUserCategory }) => {
-  console.log(userCategory);
   return (
     <form>
       <label htmlFor="category">

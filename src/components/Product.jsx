@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { SlBasketLoaded } from "react-icons/sl";
 
-const Product = ({ image, title, id, description, price }) => {
+const Product = ({ image, title, id, description, price, isFav }) => {
   const shortDescription = () => {
     let shorten =
       description.length > 50 ? description.substring(1, 100) : null;
@@ -11,7 +11,7 @@ const Product = ({ image, title, id, description, price }) => {
   };
 
   return (
-    <Link to={`/details/${id}`} className="card">
+    <Link to={`/details/${id}`} className={`card ${isFav ? "favorite" : null}`}>
       <div
         className="card_image"
         style={{
@@ -26,7 +26,7 @@ const Product = ({ image, title, id, description, price }) => {
         <p className="description">{shortDescription()}</p>
         <p className="price">${price}</p>
         <div className="card_buttons">
-          <button>
+          <button className="add">
             <SlBasketLoaded size={18} /> add
           </button>
         </div>
