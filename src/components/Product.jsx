@@ -11,9 +11,18 @@ const Product = ({ image, title, id, description, price, isFav }) => {
   };
 
   return (
-    <Link to={`/details/${id}`} className={`card ${isFav ? "favorite" : null}`}>
+    <Link
+      to={`/details/${id}`}
+      className={`card ${
+        isFav ? "favorite" : null
+      } m-1 flex h-72 w-full cursor-pointer items-start justify-start border border-l-8 border-indigo-300 bg-white p-2 text-sm tracking-wide transition duration-500 hover:scale-110 `}
+      style={{
+        boxShadow:
+          "6px 6px 12px rgba(112, 108, 149, 0.5),transition: 0.3s ease-in-out",
+      }}
+    >
       <div
-        className="card_image"
+        className="m-1 h-1/2 w-full"
         style={{
           backgroundImage: `url(${image})`,
           backgroundRepeat: "no-repeat",
@@ -21,13 +30,15 @@ const Product = ({ image, title, id, description, price, isFav }) => {
           backgroundPosition: "center",
         }}
       ></div>
-      <div className="card_body">
-        <p className="title">{title.substring(0, 17)}</p>
-        <p className="description">{shortDescription()}</p>
-        <p className="price">${price}</p>
-        <div className="card_buttons">
-          <button className="add">
-            <SlBasketLoaded size={18} /> add
+      <div className="p-4">
+        <p className="text-base font-bold">{title.substring(0, 17)}</p>
+        <p className="py-4 text-sm font-thin text-slate-700">
+          {shortDescription()}
+        </p>
+        <p className="text-base font-bold">${price}</p>
+        <div className="w-full">
+          <button className="btn add">
+            <SlBasketLoaded size={18} className="mr-2" /> add
           </button>
         </div>
       </div>

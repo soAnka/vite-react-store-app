@@ -1,268 +1,35 @@
-* {
-  box-sizing: border-box;
-}
-body,
-html {
-  height: 100%;
-  font-family: "Times New Roman", Times, serif;
-  background-color: rgb(237, 237, 239);
-}
-.products_results_informations {
-  width: 100%;
-  padding: 0 90px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-}
-.products_category {
-  font-size: 2rem;
-  font-weight: 800;
-}
-.products_category span {
-  color: rgb(31, 25, 124);
-  font-style: italic;
-  font-weight: 100;
-}
-.products_num {
-  color: rgb(31, 25, 124);
-}
-.products_container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  height: 100%;
-  padding: 0 80px;
-}
-.products_container a {
-  text-decoration: none;
-  color: black;
-}
-.card {
-  width: 100%;
-  max-width: 385px;
-  background-color: white;
-  border: 1px solid rgb(165, 161, 228);
-  border-left: 8px solid rgb(165, 161, 228);
-  margin: 0.5rem;
-  padding: 1rem;
-  display: flex;
-  align-items: flex-start;
-  font-size: 12px;
-  letter-spacing: 0.35px;
-  box-shadow: 6px 6px 12px rgba(112, 108, 149, 0.5);
-  transition: 0.3s ease-in-out;
-}
-.card:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-}
-.card_image {
-  width: 100%;
-  height: 55%;
-  margin: 5px;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-50 font-serif;
+  }
 }
 
-.card_body {
-  padding: 0.25rem;
-  font-weight: 200;
-}
-.card_body .title,
-.card_body .price {
-  font-weight: 600;
-  font-size: 16px;
-}
-.card_body .description {
-  font-size: 14px;
-  font-weight: 100;
-  color: rgb(62, 62, 62);
-}
-.card_buttons {
-  width: 100%;
-}
-.card_buttons button {
-  width: 100%;
-  padding: 1rem;
-  font-size: 14px;
-  background-color: transparent;
-  border: 1px solid rgb(51, 43, 169);
-  color: white;
-  letter-spacing: 0.8px;
-  font-weight: 600;
-  box-shadow: none;
-  color: rgb(51, 43, 169);
-  transition: 0.2s ease-in-out;
-}
-
-/* PRODUCT PAGE  */
-
-.products_container.product {
-  background-color: rgb(204, 203, 216);
-  height: 100vh;
-}
-
-.product .card {
-  max-width: 1080px;
-  height: 90vh;
-  background-color: white;
-  border: none;
-  border-left: 8px solid rgb(51, 43, 169);
-  margin: 2rem;
-  padding: 2rem;
-  font-size: 16px;
-  letter-spacing: 0.5px;
-  transition: 0.3s ease-in-out;
-}
-.product .card:hover {
-  transform: none;
-  cursor: auto;
-  transition: none;
-}
-.product .card_image {
-  height: 90%;
-  margin: 5px;
-}
-
-.product .card_body {
-  width: 70%;
-  /* padding: 2rem; */
-  font-weight: 200;
-}
-.product .card_body .title,
-.product .card_body .price {
-  font-weight: 600;
-  font-size: 22px;
-}
-.product .card_body .price {
-  padding-bottom: 2.5rem;
-}
-.product .card_body .description {
-  font-size: 1rem;
-  line-height: 22px;
-  font-weight: 100;
-  padding-top: 2.5rem;
-  color: rgb(62, 62, 62);
-}
-
-.card_buttons {
-  width: 100%;
-}
-.card_buttons button,
-.modal_btn {
-  width: 100%;
-  padding: 1rem;
-  font-size: 14px;
-  background-color: transparent;
-  color: white;
-  letter-spacing: 0.8px;
-  font-weight: 600;
-  box-shadow: none;
-  transition: 0.2s ease-in-out;
-}
-button.add,
-.modal_btn {
-  border: 1px solid rgb(51, 43, 169);
-  color: rgb(51, 43, 169);
-}
-
-button.save {
-  border: 1px solid rgb(183, 79, 0);
-  color: rgb(183, 79, 0);
-}
-
-button.add:hover {
-  background-color: rgb(51, 43, 169);
-  color: white;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-}
-
-button.save:hover {
-  background-color: rgb(183, 79, 0);
-  color: white;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-}
-
-/* DETAILS INFO  */
-
-.colors_options_container {
-  display: flex;
-  align-items: center;
-  margin: 0.5rem;
-}
-.colors p {
-  font-weight: 400;
-  font-style: italic;
-}
-.color_option {
-  width: 20px;
-  height: 20px;
-  border-radius: 100%;
-  margin: 2px;
-  border: none;
-}
-.color_option:hover {
-  cursor: pointer;
-}
-.color_option.activeColor {
-  border: 5px solid rgb(173, 173, 173);
-  width: 30px;
-  height: 30px;
-}
-
-.red {
-  background-color: rgb(195, 39, 65);
-}
-.blue {
-  background-color: rgb(43, 96, 203);
-}
-.green {
-  background-color: rgb(32, 180, 113);
-}
-
-/* MODAL  */
-
-#modal {
-  background-color: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#modal:empty {
-  display: none;
-}
-#modal > div {
-  width: 100%;
-  max-width: 550px;
-  border-radius: 15px;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-}
-#modal > div h2,
-#modal > div .buttons_container {
-  padding: 1rem;
-  text-align: center;
-}
-
-/* FAVORITES  */
-
-.favorite {
-  border: 1px solid rgb(183, 79, 0);
-  border-left: 4px solid rgb(183, 79, 0);
+@layer components {
+  #modal {
+    @apply fixed inset-0 z-10 flex w-full items-center justify-center bg-gray-800/75;
+  }
+  #modal:empty {
+    @apply hidden;
+  }
+  #modal > div {
+    @apply absolute left-1/2 top-1/2 flex h-1/2 w-full max-w-xl -translate-y-1/2 -translate-x-1/2 flex-col items-center justify-center rounded-2xl bg-white p-4;
+  }
+  #modal > div h2,
+  #modal > div .buttons_container {
+    @apply p-4 text-center text-xl font-semibold;
+  }
+  .btn {
+    @apply my-2 flex w-full items-center justify-center border p-5 text-sm font-bold tracking-wide hover:text-white;
+  }
+  .add {
+    @apply border-blue-800  text-blue-900 transition hover:bg-blue-800;
+  }
+  .save,
+  .cancel {
+    @apply border-orange-600  text-orange-900 hover:bg-orange-600;
+  }
 }

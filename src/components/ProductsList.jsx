@@ -5,13 +5,13 @@ const ProductsList = ({ products, loading, userCategory }) => {
     return <h3>Loading...</h3>;
   }
   return (
-    <div className="products_results">
-      <div className="products_results_informations">
-        <p className="products_category">
+    <div>
+      <div className="flex w-full items-center justify-between py-10 px-10">
+        <p className="text-2xl font-extrabold">
           {userCategory === "Saved Favorites" ? "" : "Category:"}{" "}
-          <span>{userCategory}</span>
+          <span className="font-thin italic text-blue-800">{userCategory}</span>
         </p>
-        <p className="products_num">
+        <p className="text-blue-800">
           <span>
             {products?.length > 1
               ? `${products.length} products`
@@ -19,8 +19,8 @@ const ProductsList = ({ products, loading, userCategory }) => {
           </span>
         </p>
       </div>
-      <div className="products_container">
-        <p>{loading ? "loading" : null}</p>
+      <p>{loading ? "loading" : null}</p>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {products?.map((product) => (
           <Product key={product.id} {...product} />
         ))}

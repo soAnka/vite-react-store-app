@@ -15,7 +15,7 @@ class DetailsInfo extends Component {
   render() {
     const { colors, colorActive } = this.state;
     return (
-      <div className="colors">
+      <div className="colors p-4">
         <p>Color of the package: {colors[colorActive]} </p>
         <div className="colors_options_container">
           {colors.map((colorOption, index) => (

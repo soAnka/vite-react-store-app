@@ -13,6 +13,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useQuery(["details", id], fetchProductDetails);
   const [showModal, setShowModal] = useState(false);
+  const [onList, setOnList] = useState(false);
   const navigate = useNavigate();
   const [favProduct, setFavProduct] = useContext(FavProductContext);
   console.log(favProduct);
@@ -23,11 +24,20 @@ const ProductDetails = () => {
 
   const product = data;
 
+  const addFavProduct = (product) => {
+    setShowModal(false);
+    const isOnList = favProduct.filter((f) => f.title === product.title);
+    isOnList.length
+      ? setShowModal(false)
+      : setFavProduct([...favProduct, { ...product, isFav: true }]),
+      navigate("/");
+  };
+
   return (
-    <div className="products_container product">
-      <div className="card">
+    <div className="m-1 flex items-center justify-center">
+      <div className="m-4 flex w-4/5 items-start justify-center border-l-8 border-indigo-300 bg-white p-10 text-sm tracking-wide">
         <div
-          className="card_image"
+          className="h-96 w-1/2"
           style={{
             backgroundImage: `url(${product.image})`,
             backgroundRepeat: "no-repeat",
@@ -35,35 +45,29 @@ const ProductDetails = () => {
             backgroundPosition: "center",
           }}
         ></div>
-        <div className="card_body">
-          <p className="title">{product.title}</p>
-          <p>
+        <div className="w-2/5">
+          <p className="p-4 text-xl font-bold">{product.title}</p>
+          <p className="px-4">
             {product.rating.rate} count: {product.rating.count}
           </p>
-          <p className="description">{product.description}</p>
+          <p className="p-4 text-base font-thin">{product.description}</p>
           <DetailsInfo />
-          <p className="price">${product.price}</p>
-          {showModal ? (
+          <p className="p-4 text-xl font-bold">${product.price}</p>
+          {showModal && !onList ? (
             <Modal>
-              <div className={`${showModal ? "modal-isOpen" : null}`}>
+              <div>
                 <h2>
                   Would you like to save this product to your Favorites List?
                 </h2>
-                <div className="buttons_container">
+                <div>
                   <button
-                    className="modal_btn add"
-                    onClick={() => {
-                      setFavProduct([
-                        ...favProduct,
-                        { ...product, isFav: true },
-                      ]),
-                        navigate("/");
-                    }}
+                    className="btn add"
+                    onClick={() => addFavProduct(product)}
                   >
                     Yes
                   </button>
                   <button
-                    className="modal_btn save"
+                    className="btn cancel"
                     onClick={() => setShowModal(false)}
                   >
                     Cancel
@@ -72,12 +76,12 @@ const ProductDetails = () => {
               </div>
             </Modal>
           ) : null}
-          <div className="card_buttons">
-            <button className="add">
-              <SlBasketLoaded size={18} /> add
+          <div className="m-4">
+            <button className="btn add">
+              <SlBasketLoaded size={20} className="mr-2" /> add
             </button>
-            <button className="save" onClick={() => setShowModal(true)}>
-              <MdOutlineFavoriteBorder size={18} /> save
+            <button className="btn save" onClick={() => setShowModal(true)}>
+              <MdOutlineFavoriteBorder size={20} className="mr-2" /> save
             </button>
           </div>
         </div>

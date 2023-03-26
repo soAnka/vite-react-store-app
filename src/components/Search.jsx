@@ -19,7 +19,7 @@ const Search = () => {
   const { data, isLoading } = useProducts(userCategory);
   const [favProducts] = useContext(FavProductContext);
   return (
-    <div>
+    <div className="h-screen p-20">
       <SearchForm
         userCategory={userCategory}
         setUserCategory={setUserCategory}
