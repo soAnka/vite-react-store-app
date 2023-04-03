@@ -1,4 +1,7 @@
-const categories = [
+import { Category } from "../types/APIResponsesTypes";
+import { IPropsSettingCategory } from "../types/CategoriesTypes";
+
+const categories: Category[] = [
   "all",
   "electronics",
   "jewelery",
@@ -6,7 +9,10 @@ const categories = [
   "women's clothing",
 ];
 
-const SearchForm = ({ userCategory, setUserCategory }) => {
+const SearchForm = ({
+  userCategory,
+  setUserCategory,
+}: IPropsSettingCategory) => {
   return (
     <form>
       <label htmlFor="category" className="font-light">
@@ -16,7 +22,9 @@ const SearchForm = ({ userCategory, setUserCategory }) => {
           disabled={categories.length == 0}
           id="category"
           value={userCategory}
-          onChange={(e) => setUserCategory(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>): void =>
+            setUserCategory(e.target.value as Category)
+          }
         >
           {categories.map((c) => (
             <option key={c}>{c}</option>

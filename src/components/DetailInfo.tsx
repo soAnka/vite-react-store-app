@@ -6,10 +6,15 @@ class DetailsInfo extends Component {
     colorActive: 0,
   };
 
-  clickHandler = (e) => {
-    this.setState({
-      colorActive: +e.target.dataset.index,
-    });
+  clickHandler = (e: React.MouseEvent<HTMLElement>) => {
+    if (!(e.target instanceof HTMLElement)) {
+      return;
+    }
+    if (e.target.dataset.index) {
+      this.setState({
+        colorActive: +e.target.dataset.index,
+      });
+    }
   };
 
   render() {

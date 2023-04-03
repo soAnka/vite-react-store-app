@@ -1,36 +1,53 @@
-import { useState, useContext } from "react";
+import { useState, useContext, lazy } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import fetchProductDetails from "../customHooks/fetchProductDetails";
 import { SlBasketLoaded } from "react-icons/sl";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import ErrorBoundary from "./ErrorBoundary";
-import Modal from "./Modal";
 import DetailsInfo from "./DetailInfo";
 import FavProductContext from "../FavProductContext";
+import { Product } from "../types/APIResponsesTypes";
+
+const Modal = lazy(() => import("./Modal"));
 
 const ProductDetails = () => {
   const { id } = useParams();
-  const { data, isLoading } = useQuery(["details", id], fetchProductDetails);
-  const [showModal, setShowModal] = useState(false);
-  const [onList, setOnList] = useState(false);
-  const navigate = useNavigate();
-  const [favProduct, setFavProduct] = useContext(FavProductContext);
-  console.log(favProduct);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (!id) {
+    throw new Error("No id");
   }
 
-  const product = data;
+  const data = useQuery(["details", id], fetchProductDetails);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unused-vars
+  const [favProduct, setFavProduct] = useContext(FavProductContext);
 
-  const addFavProduct = (product) => {
-    setShowModal(false);
-    const isOnList = favProduct.filter((f) => f.title === product.title);
-    isOnList.length
-      ? setShowModal(false)
-      : setFavProduct([...favProduct, { ...product, isFav: true }]),
-      navigate("/");
+  if (data.isLoading) {
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    );
+  }
+  const product = data.data;
+
+  if (!product) {
+    throw new Error("Couldnt find a product");
+  }
+  const addFavProduct = (product: Product) => {
+    const faToAdd = {
+      id: product.id,
+      title: product.title,
+      category: product.category,
+      description: product.description,
+      price: product.price,
+      image: product.image,
+      isFav: true,
+    };
+
+    setFavProduct((prev: Product[] | []) => [...prev, faToAdd]);
+    navigate("/");
   };
 
   return (
@@ -47,13 +64,10 @@ const ProductDetails = () => {
         ></div>
         <div className="w-2/5">
           <p className="p-4 text-xl font-bold">{product.title}</p>
-          <p className="px-4">
-            {product.rating.rate} count: {product.rating.count}
-          </p>
           <p className="p-4 text-base font-thin">{product.description}</p>
           <DetailsInfo />
           <p className="p-4 text-xl font-bold">${product.price}</p>
-          {showModal && !onList ? (
+          {showModal ? (
             <Modal>
               <div>
                 <h2>
@@ -94,10 +108,10 @@ function DetailsProductErrorB() {
   return (
     <ErrorBoundary
       errorMessage={
-        <h4>
+        <div>
           {" "}
           Something went wrong. <Link to="/">Go back to main page</Link>
-        </h4>
+        </div>
       }
     >
       <ProductDetails />

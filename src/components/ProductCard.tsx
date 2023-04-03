@@ -1,21 +1,28 @@
 import { Link } from "react-router-dom";
 import { SlBasketLoaded } from "react-icons/sl";
 
-const Product = ({ image, title, id, description, price, isFav }) => {
+interface IProps {
+  image: string;
+  title: string;
+  id: number;
+  description: string;
+  price: number;
+}
+
+const ProductCard = ({ image, title, id, description, price }: IProps) => {
   const shortDescription = () => {
-    let shorten =
-      description.length > 50 ? description.substring(1, 100) : null;
-    let firstLetter = description.charAt(0).toUpperCase();
-    shorten = firstLetter + shorten + "...";
+    const shortedDescription =
+      description.length > 50 ? description.substring(1, 100) : "";
+    const firstLetter = description.charAt(0).toUpperCase();
+    const shorten = `${firstLetter} ${shortedDescription} ...`;
     return shorten;
   };
 
   return (
     <Link
       to={`/details/${id}`}
-      className={`card ${
-        isFav ? "favorite" : null
-      } m-1 flex h-72 w-full cursor-pointer items-start justify-start border border-l-8 border-indigo-300 bg-white p-2 text-sm tracking-wide transition duration-500 hover:scale-110 `}
+      className={`card 
+       m-1 flex h-72 w-full cursor-pointer items-start justify-start border border-l-8 border-indigo-300 bg-white p-2 text-sm tracking-wide transition duration-500 hover:scale-110 `}
       style={{
         boxShadow:
           "6px 6px 12px rgba(112, 108, 149, 0.5),transition: 0.3s ease-in-out",
@@ -46,4 +53,4 @@ const Product = ({ image, title, id, description, price, isFav }) => {
   );
 };
 
-export default Product;
+export default ProductCard;

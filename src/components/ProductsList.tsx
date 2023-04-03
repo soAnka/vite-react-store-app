@@ -1,8 +1,18 @@
-import Product from "./Product";
+import { Category, Product } from "../types/APIResponsesTypes";
+import ProductCard from "./ProductCard";
 
-const ProductsList = ({ products, loading, userCategory }) => {
+interface IProps {
+  products: Product[];
+  loading: boolean;
+  userCategory: Category;
+}
+const ProductsList = ({ products, loading, userCategory }: IProps) => {
   if (loading) {
-    return <h3>Loading...</h3>;
+    return (
+      <div>
+        <h3>Loading...</h3>
+      </div>
+    );
   }
   return (
     <div>
@@ -22,7 +32,7 @@ const ProductsList = ({ products, loading, userCategory }) => {
       <p>{loading ? "loading" : null}</p>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {products?.map((product) => (
-          <Product key={product.id} {...product} />
+          <ProductCard key={product.id} {...product} />
         ))}
       </div>
     </div>

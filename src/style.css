@@ -32,4 +32,16 @@
   .cancel {
     @apply border-orange-600  text-orange-900 hover:bg-orange-600;
   }
+  .color_option {
+    @apply m-0.5 h-4 w-4 rounded-br-lg rounded-tl-lg;
+  }
+  .red {
+    @apply bg-red-700;
+  }
+  .green {
+    @apply bg-green-700;
+  }
+  .blue {
+    @apply bg-blue-700;
+  }
 }
