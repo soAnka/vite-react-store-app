@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build:client": "vite build --outDir ./dist/client",
+    "build:server": "vite build --outDir ./dist/server --ssr src/ServerApp.jsx",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node server.js",
     "lint": "eslint \"src/**/*.(js,jsx)\" --quiet",
     "format": "prettier --write \"src/**/*.{js,jsx}",
     "test": "echo \"Error: no test specified\" && exit 1"

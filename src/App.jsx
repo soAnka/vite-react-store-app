@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
-import Search from "./components/Search";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { lazy, Suspense, useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ProductDetails from "./components/ProductDetails";
 import { Link } from "react-router-dom";
 import FavProductContext from "./FavProductContext";
+
+const ProductDetails = lazy(() => import("./components/ProductDetails"));
+const Search = lazy(() => import("./components/Search"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,26 +18,36 @@ const queryClient = new QueryClient({
 
 const App = () => {
   const favProducts = useState([]);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <div className="m-0 h-full p-0">
-      <BrowserRouter>
+    mounted && (
+      <div className="m-0 h-full p-0">
         <QueryClientProvider client={queryClient}>
           <FavProductContext.Provider value={favProducts}>
-            <div className="m-0 bg-blue-800 p-20 text-center text-2xl text-white">
-              <Link to="/">The Store</Link>
-            </div>
-            <Routes>
-              <Route path="/details/:id" element={<ProductDetails />} />
-              <Route path="/" element={<Search />} />
-            </Routes>
+            <Suspense
+              fallback={
+                <div>
+                  <h3>loading...</h3>
+                </div>
+              }
+            >
+              <div className="m-0 bg-blue-800 p-20 text-center text-2xl text-white">
+                <Link to="/">The Store</Link>
+              </div>
+              <Routes>
+                <Route path="/details/:id" element={<ProductDetails />} />
+                <Route path="/" element={<Search />} />
+              </Routes>
+            </Suspense>
           </FavProductContext.Provider>
         </QueryClientProvider>
-      </BrowserRouter>
-    </div>
+      </div>
+    )
   );
 };
 
-const rootApp = document.getElementById("app");
-const container = createRoot(rootApp);
-container.render(<App />);
+export default App;

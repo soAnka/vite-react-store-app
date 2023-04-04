@@ -1,13 +1,14 @@
-import { useState, useContext } from "react";
+import { useState, useContext, lazy } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import fetchProductDetails from "../customHooks/fetchProductDetails";
 import { SlBasketLoaded } from "react-icons/sl";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import ErrorBoundary from "./ErrorBoundary";
-import Modal from "./Modal";
 import DetailsInfo from "./DetailInfo";
 import FavProductContext from "../FavProductContext";
+
+const Modal = lazy(() => import("./Modal"));
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -16,7 +17,6 @@ const ProductDetails = () => {
   const [onList, setOnList] = useState(false);
   const navigate = useNavigate();
   const [favProduct, setFavProduct] = useContext(FavProductContext);
-  console.log(favProduct);
 
   if (isLoading) {
     return <div>Loading...</div>;
