@@ -1,3 +1,5 @@
+import { all } from "../store/categorySlice";
+
 const categories = [
   "all",
   "electronics",
@@ -16,7 +18,7 @@ const SearchForm = ({ userCategory, setUserCategory }) => {
           disabled={categories.length == 0}
           id="category"
           value={userCategory}
-          onChange={(e) => setUserCategory(e.target.value)}
+          onChange={(e) => setUserCategory(all(e.target.value))}
         >
           {categories.map((c) => (
             <option key={c}>{c}</option>

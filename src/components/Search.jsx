@@ -1,10 +1,9 @@
-import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import useProducts from "../customHooks/useProducts";
 import ErrorBoundary from "./ErrorBoundary";
 import ProductsList from "./ProductsList";
 import SearchForm from "./SearchForm";
-import FavProductContext from "../FavProductContext";
+import { useSelector, useDispatch } from "react-redux";
 
 const categories = [
   "all",
@@ -15,18 +14,18 @@ const categories = [
 ];
 
 const Search = () => {
-  const [userCategory, setUserCategory] = useState("all");
+  const userCategory = useSelector((state) => state.category.category);
   const { data, isLoading } = useProducts(userCategory);
-  const [favProducts] = useContext(FavProductContext);
+  const favProducts = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+
   return (
     <div className="h-screen p-20">
-      <SearchForm
-        userCategory={userCategory}
-        setUserCategory={setUserCategory}
-      />
-      {favProducts.length ? (
+      <SearchForm userCategory={userCategory} setUserCategory={dispatch} />
+      {favProducts.favProducts !== undefined &&
+      favProducts.favProducts.length ? (
         <ProductsList
-          products={favProducts}
+          products={favProducts.favProducts}
           userCategory="Saved Favorites"
           loading={false}
         />

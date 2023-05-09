@@ -1,4 +1,6 @@
-import { useState, useContext, lazy } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addToFav, addToCart } from "../store/productsSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import fetchProductDetails from "../customHooks/fetchProductDetails";
@@ -6,32 +8,25 @@ import { SlBasketLoaded } from "react-icons/sl";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import ErrorBoundary from "./ErrorBoundary";
 import DetailsInfo from "./DetailInfo";
-import FavProductContext from "../FavProductContext";
-
-const Modal = lazy(() => import("./Modal"));
+import Modal from "./Modal";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const { data, isLoading } = useQuery(["details", id], fetchProductDetails);
   const [showModal, setShowModal] = useState(false);
-  const [onList, setOnList] = useState(false);
   const navigate = useNavigate();
-  const [favProduct, setFavProduct] = useContext(FavProductContext);
+  const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(0);
 
+  const onChangeHandler = (e) => {
+    e.preventDefault();
+    setQuantity(+e.target.value);
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   const product = data;
-
-  const addFavProduct = (product) => {
-    setShowModal(false);
-    const isOnList = favProduct.filter((f) => f.title === product.title);
-    isOnList.length
-      ? setShowModal(false)
-      : setFavProduct([...favProduct, { ...product, isFav: true }]),
-      navigate("/");
-  };
 
   return (
     <div className="m-1 flex items-center justify-center">
@@ -53,7 +48,13 @@ const ProductDetails = () => {
           <p className="p-4 text-base font-thin">{product.description}</p>
           <DetailsInfo />
           <p className="p-4 text-xl font-bold">${product.price}</p>
-          {showModal && !onList ? (
+          <input
+            min={0}
+            type="number"
+            value={quantity}
+            onChange={onChangeHandler}
+          />
+          {showModal ? (
             <Modal>
               <div>
                 <h2>
@@ -62,7 +63,10 @@ const ProductDetails = () => {
                 <div>
                   <button
                     className="btn add"
-                    onClick={() => addFavProduct(product)}
+                    onClick={() => {
+                      dispatch(addToFav(product));
+                      navigate("/");
+                    }}
                   >
                     Yes
                   </button>
@@ -77,7 +81,12 @@ const ProductDetails = () => {
             </Modal>
           ) : null}
           <div className="m-4">
-            <button className="btn add">
+            <button
+              className="btn add"
+              onClick={() => {
+                dispatch(addToCart({ ...product, quantity })), navigate("/");
+              }}
+            >
               <SlBasketLoaded size={20} className="mr-2" /> add
             </button>
             <button className="btn save" onClick={() => setShowModal(true)}>
