@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import fetchProductDetails from "../customHooks/fetchProductDetails";
 import { SlBasketLoaded } from "react-icons/sl";
+import { MdStarRate } from "react-icons/md";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import ErrorBoundary from "./ErrorBoundary";
 import DetailsInfo from "./DetailInfo";
@@ -16,7 +17,7 @@ const ProductDetails = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -27,6 +28,7 @@ const ProductDetails = () => {
   }
 
   const product = data;
+  const rateNum = Math.round(product.rating.rate);
 
   return (
     <div className="m-1 flex items-center justify-center">
@@ -42,17 +44,29 @@ const ProductDetails = () => {
         ></div>
         <div className="w-2/5">
           <p className="p-4 text-xl font-bold">{product.title}</p>
-          <p className="px-4">
-            {product.rating.rate} count: {product.rating.count}
-          </p>
-          <p className="p-4 text-base font-thin">{product.description}</p>
+          <div className="px-4">
+            <div className="flex">
+              {[...Array(5)].map((rateStar, index) => {
+                return (
+                  <MdStarRate
+                    key={index}
+                    color={`${index < rateNum ? "orange" : "gray"}`}
+                    outline="orange"
+                  />
+                );
+              })}
+              <p className="ml-2 text-xs">{product.rating.count} reviews</p>
+            </div>
+          </div>
+          <p className="mt-4 p-4 text-base font-thin">{product.description}</p>
           <DetailsInfo />
           <p className="p-4 text-xl font-bold">${product.price}</p>
           <input
-            min={0}
+            min={1}
             type="number"
             value={quantity}
             onChange={onChangeHandler}
+            className="ml-4"
           />
           {showModal ? (
             <Modal>
@@ -64,7 +78,7 @@ const ProductDetails = () => {
                   <button
                     className="btn add"
                     onClick={() => {
-                      dispatch(addToFav(product));
+                      dispatch(addToFav({ ...product, isFav: true }));
                       navigate("/");
                     }}
                   >
@@ -80,7 +94,7 @@ const ProductDetails = () => {
               </div>
             </Modal>
           ) : null}
-          <div className="m-4">
+          <div className="ml-4 mt-8">
             <button
               className="btn add"
               onClick={() => {

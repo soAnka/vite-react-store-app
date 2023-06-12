@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
 import useProducts from "../customHooks/useProducts";
 import ErrorBoundary from "./ErrorBoundary";
 import ProductsList from "./ProductsList";
-import SearchForm from "./SearchForm";
 import { useSelector, useDispatch } from "react-redux";
+import SideNav from "./SideNav";
+import Banner from "./Banner";
+import ErrorComponent from "./ErrorComponent";
 
 const categories = [
   "all",
@@ -16,39 +17,49 @@ const categories = [
 const Search = () => {
   const userCategory = useSelector((state) => state.category.category);
   const { data, isLoading } = useProducts(userCategory);
-  const favProducts = useSelector((state) => state.products);
+  const allProducts = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const favProductsList =
+    allProducts.favProducts !== undefined && allProducts.favProducts.length;
 
   return (
-    <div className="h-screen p-20">
-      <SearchForm userCategory={userCategory} setUserCategory={dispatch} />
-      {favProducts.favProducts !== undefined &&
-      favProducts.favProducts.length ? (
-        <ProductsList
-          products={favProducts.favProducts}
-          userCategory="Saved Favorites"
-          loading={false}
-        />
-      ) : null}
-      <ProductsList
-        products={data}
-        loading={isLoading}
-        userCategory={userCategory}
+    <>
+      <Banner
+        photo="bg-banner-main"
+        title="Today's Special Offer!"
+        description="  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris."
       />
-    </div>
+      <div className="h-screen p-20">
+        <p className="text-blue-800"></p>
+        <div className="grid grid-cols-12 gap-8 ">
+          <div className="menu col-span-12 my-8 sm:col-span-12 xl:col-span-3">
+            <SideNav userCategory={userCategory} setUserCategory={dispatch} />
+          </div>
+          <div className="products col-span-12 sm:col-span-12 xl:col-span-9">
+            {favProductsList ? (
+              <ProductsList
+                products={allProducts.favProducts}
+                userCategory="Saved Favorites"
+                loading={false}
+              />
+            ) : null}
+            <ProductsList
+              products={data}
+              loading={isLoading}
+              userCategory={userCategory}
+              setUserCategory={dispatch}
+            />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 function SearchErrorB() {
   return (
-    <ErrorBoundary
-      errorMessage={
-        <h4>
-          {" "}
-          Something went wrong while searching.{" "}
-          <Link to="/">Go back to main page</Link>
-        </h4>
-      }
-    >
+    <ErrorBoundary errorMessage={<ErrorComponent />}>
       <Search />
     </ErrorBoundary>
   );

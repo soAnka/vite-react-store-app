@@ -2,7 +2,7 @@ import { Component } from "react";
 
 class DetailsInfo extends Component {
   state = {
-    colors: ["blue", "red", "green"],
+    colors: ["blue", "yellow", "green"],
     colorActive: 0,
   };
 
@@ -16,7 +16,9 @@ class DetailsInfo extends Component {
     const { colors, colorActive } = this.state;
     return (
       <div className="colors p-4">
-        <p>Color of the package: {colors[colorActive]} </p>
+        <p className="font-thin">
+          Choose color of the package: {colors[colorActive]}{" "}
+        </p>
         <div className="colors_options_container">
           {colors.map((colorOption, index) => (
             <button
